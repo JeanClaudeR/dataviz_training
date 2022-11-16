@@ -1,0 +1,42 @@
+---
+title: "demo_rmarkdown"
+author: "Jean-Claude Razafindrakoto"
+date: "2022-11-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r libs_import, include=FALSE}
+library(ggplot2)
+library(rvg)
+library(ggiraph)
+```
+
+```{r define_theme, include=FALSE}
+mytheme_main <- theme( panel.background = element_blank(), 
+  panel.grid.major = element_line(colour = "#dddddd"), 
+  axis.ticks = element_line(colour = "#dddddd") )
+
+mytheme_map <- theme(
+  panel.background = element_blank(), axis.title.x = element_blank(),
+  axis.text = element_blank(), axis.line.x = element_blank(),
+  axis.line.y = element_blank(), axis.title.y = element_blank(),
+  axis.ticks.x = element_blank(), axis.ticks.y = element_blank() )
+```
+
+```{r load_data, include=FALSE}
+dataset$tooltip <- row.names(dataset)
+```
+
+# geom_point_interactive example
+gg_point_1 <- ggplot(dataset, aes(x = disp, y = qsec, 
+        color = wt, tooltip = tooltip ) ) + 
+    geom_point_interactive(size=3)
+
+# htmlwidget call
+ggiraph(code = {print(gg_point_1 + mytheme_main)}, width = 7, height = 6)

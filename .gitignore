@@ -1,0 +1,5 @@
+*.html
+.ipynb_checkpoints
+*quarto_files
+R/demo_simple_files/
+R/demo_files/

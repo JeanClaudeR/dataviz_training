@@ -1,0 +1,61 @@
+---
+title: "Interactive ggplot2 with ggiraph extension"
+author: "Jean-Claude Razafindrakoto"
+date: "2022-11-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libs_import, include=FALSE}
+library(ggplot2)
+library(ggiraph)
+library(cowplot)
+```
+
+# Demo to put multiple graphs on a grid
+```{r load_data, include=FALSE}
+mtcars <- mtcars
+mtcars$tooltip <- rownames(mtcars)
+```
+# Explore briefly the mtcars
+## The first rows
+```{r first_rows, echo=TRUE}
+head(mtcars)
+```
+
+## Summarize mtcars dataset
+```{r summary_stats, echo=TRUE}
+summary(mtcars)
+```
+
+# The real stuff : ggplot2 for the basic plots, cowplot to have grid and ggiraph for interactivity
+
+## Remainder on basic ggplot2 plot
+```{r ggplot_basic, include=TRUE}
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) + 
+  geom_point()
+```
+## Create 2 plots objects using the mtcars dataset
+```{r ggplot_1, include=TRUE}
+gg1 <- ggplot(mtcars) +
+  geom_point_interactive(aes(x = drat, y = wt, color = qsec, 
+    tooltip = tooltip, data_id = tooltip ), size = 4) 
+```
+
+```{r ggplot_2, include=FALSE}
+gg2 <- ggplot(mtcars) +
+  geom_point_interactive(aes(x = qsec, y = disp, color = mpg, 
+    tooltip = tooltip, data_id = tooltip ), size = 4)
+```
+
+## 2 plots in a grid
+Mouseover points to see where they are located in the other graph.
+```{r plot_using_cowplot}
+girafe( ggobj = plot_grid(gg1, gg2), width_svg = 8, height_svg = 4)
+
+```
+
+
